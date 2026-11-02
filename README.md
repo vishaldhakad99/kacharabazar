@@ -144,11 +144,10 @@ The repository includes pre-configured `.env` files for immediate localhost exec
   ```env
   PORT=5000
   NODE_ENV=development
-  MONGODB_URI=mongodb://127.0.0.1:27017/kachra_bazar
-  JWT_SECRET=kachra_bazar_super_secure_jwt_secret_key_bhopal_2026
-  JWT_EXPIRES_IN=7d
+  MONGODB_URI=mongodbkachra_bazar
+  JWT_SECRET=kachra_bazar_super_secure_j026
   CLIENT_URL=http://localhost:5173
-  SIMULATE_VEHICLES=true
+  
   ```
 
 ### 4. Seed the Database
