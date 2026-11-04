@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
 import {
   Compass,
   Truck,
@@ -10,17 +11,29 @@ import {
   Clock,
   ArrowRight,
   MapPin,
+
+  
 } from 'lucide-react';
 import useAuthStore from '../../store/useAuthStore';
 import api from '../../api/client';
+
+
+
+
+
+
 import LoadingSkeleton from '../../components/common/LoadingSkeleton';
 
 export const WorkerDashboard = () => {
+
+  
   const { user } = useAuthStore();
   const [routes, setRoutes] = useState([]);
   const [pendingPickups, setPendingPickups] = useState([]);
   const [dumps, setDumps] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +46,8 @@ export const WorkerDashboard = () => {
 
         if (routesRes.success) setRoutes(routesRes.routes || []);
         if (pickupsRes.success) setPendingPickups(pickupsRes.pickups || []);
+
+        
         if (dumpsRes.success) setDumps(dumpsRes.dumps || []);
       } catch (err) {
         // Handled
@@ -46,6 +61,8 @@ export const WorkerDashboard = () => {
 
   const activeRoute = routes.find((r) => r.status === 'in_progress') || routes[0];
   const completedStops = activeRoute?.stops?.filter((s) => s.status === 'completed')?.length || 0;
+
+  
   const totalStops = activeRoute?.stops?.length || 0;
   const progressPercent = totalStops > 0 ? Math.round((completedStops / totalStops) * 100) : 0;
 
@@ -53,6 +70,10 @@ export const WorkerDashboard = () => {
     <div className="space-y-6 sm:space-y-8">
       {/* Title */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+
+
+
+        
         <div>
           <span className="text-xs font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider">
             Sanitation Field Operations
@@ -60,6 +81,7 @@ export const WorkerDashboard = () => {
           <h1 className="text-2xl sm:text-3xl font-heading font-black text-ink dark:text-white">
             Worker Portal • {user?.name}
           </h1>
+          
           <p className="text-xs text-muted">
             Assigned Ward: <strong>{user?.ward?.name || 'Bhopal Central'}</strong> • Pilot City: Bhopal Municipal Corporation (BMC)
           </p>
