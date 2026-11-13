@@ -16,14 +16,21 @@ import {
 
 const AdminAnnouncementsPage = () => {
   const [announcements, setAnnouncements] = useState([]);
+
+  
   const [wards, setWards] = useState([]);
+
+  
   const [loading, setLoading] = useState(true);
+  
   const [submitting, setSubmitting] = useState(false);
 
-  // Form state
+  
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  
   const [wardId, setWardId] = useState('');
+  
   const [priority, setPriority] = useState('normal');
 
   const fetchData = async () => {
@@ -35,6 +42,8 @@ const AdminAnnouncementsPage = () => {
       ]);
       setAnnouncements(annRes.data.announcements || []);
       setWards(wardRes.data.wards || []);
+
+      
     } catch (err) {
       toast.error('Failed to load announcements data.');
     } finally {
@@ -48,6 +57,8 @@ const AdminAnnouncementsPage = () => {
 
   const handleBroadcast = async (e) => {
     e.preventDefault();
+
+    
     if (!title.trim() || !body.trim()) {
       toast.error('Please enter announcement title and message content.');
       return;
@@ -57,6 +68,9 @@ const AdminAnnouncementsPage = () => {
       setSubmitting(true);
       const payload = {
         title: title.trim(),
+
+
+        
         body: body.trim(),
         priority,
         ward: wardId || null,
