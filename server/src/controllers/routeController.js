@@ -1,14 +1,21 @@
 import { Route, Vehicle, PickupRequest } from '../models/index.js';
 import { emitToAll } from '../services/socket.js';
 
-// @desc    Get routes (role-scoped)
-// @route   GET /api/routes
-// @access  Private
-export const getRoutes = async (req, res, next) => {
+ync (req, res, next) => {
   try {
+
+
+    
     const { ward, status, date } = req.query;
     const query = {};
 
+
+
+
+
+
+
+    
     if (req.user.role === 'worker') {
       query.worker = req.user.id;
     } else if (req.user.role === 'admin') {
@@ -37,14 +44,19 @@ export const getRoutes = async (req, res, next) => {
   }
 };
 
-// @desc    Get single route by ID
-// @route   GET /api/routes/:id
-// @access  Private
+
+
+
+
+
 export const getRouteById = async (req, res, next) => {
   try {
     const route = await Route.findById(req.params.id)
       .populate('ward', 'name code city center')
       .populate('vehicle', 'regNumber type currentLocation status')
+
+
+      
       .populate('worker', 'name phone email')
       .populate({
         path: 'stops.request',
@@ -67,9 +79,11 @@ export const getRouteById = async (req, res, next) => {
   }
 };
 
-// @desc    Create new collection route
-// @route   POST /api/routes
-// @access  Private/Admin
+
+
+
+
+
 export const createRoute = async (req, res, next) => {
   try {
     const { name, ward, vehicle, worker, stops, scheduledFor } = req.body;
