@@ -56,6 +56,9 @@ function App() {
 
   return (
     <BrowserRouter>
+
+
+      
       {/* Toast Notification Container */}
       <Toaster
         position="top-right"
@@ -67,6 +70,9 @@ function App() {
             fontSize: '13px',
             borderRadius: '16px',
             padding: '12px 16px',
+
+
+            
             boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.2)',
           },
           success: {
@@ -78,6 +84,10 @@ function App() {
           error: {
             iconTheme: {
               primary: '#EF4444',
+
+              
+
+              
               secondary: '#FFFFFF',
             },
           },
@@ -87,8 +97,12 @@ function App() {
       <Routes>
         {/* Public Routes with standard Layout (Navbar + Footer, no Sidebar) */}
         <Route element={<AppLayout requireAuth={false} />}>
+
+          
           <Route path="/" element={<LandingPage />} />
           <Route path="/about" element={<AboutPage />} />
+
+          
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Route>
@@ -97,9 +111,14 @@ function App() {
         <Route
           element={
             <ProtectedRoute>
+
+
+              
               <AppLayout requireAuth={true} />
             </ProtectedRoute>
           }
+
+          
         >
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
@@ -109,16 +128,23 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute allowedRoles={['citizen']}>
+
+              
               <AppLayout requireAuth={true} />
             </ProtectedRoute>
           }
         >
           <Route index element={<CitizenDashboard />} />
           <Route path="pickups" element={<CitizenPickupsPage />} />
+
+          
           <Route path="pickups/new" element={<CreatePickupPage />} />
           <Route path="pickups/:id" element={<PickupDetailPage />} />
           <Route path="track" element={<CitizenTrackPage />} />
           <Route path="dumps/new" element={<ReportDumpPage />} />
+
+
+          
           <Route path="rewards" element={<RewardsBazarPage />} />
           <Route path="points" element={<PointsHistoryPage />} />
         </Route>
