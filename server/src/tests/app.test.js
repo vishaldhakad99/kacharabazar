@@ -87,6 +87,16 @@ describe('Kachra Bazar Full Stack API Tests', () => {
       expect(res.body.user).not.toHaveProperty('passwordHash');
     });
 
+    it('GET /api/auth/me must not expose passwordHash on authenticated user', async () => {
+      const res = await request(app)
+        .get('/api/auth/me')
+        .set('Authorization', `Bearer ${citizenToken}`);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.user).not.toHaveProperty('passwordHash');
+    });
+
     it('Citizen should be FORBIDDEN (403) from accessing Admin Analytics', async () => {
       const res = await request(app)
         .get('/api/analytics/overview')
