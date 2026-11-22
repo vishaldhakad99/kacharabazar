@@ -49,6 +49,8 @@ describe('Kachra Bazar Full Stack API Tests', () => {
       expect(res.statusCode).toBe(200);
       expect(res.body.success).toBe(true);
       expect(res.body.service).toContain('Bhopal');
+      expect(res.headers).not.toHaveProperty('x-powered-by');
+      expect(res.headers).toHaveProperty('x-content-type-options', 'nosniff');
     });
 
     it('GET /api/wards should return Bhopal wards list without auth', async () => {

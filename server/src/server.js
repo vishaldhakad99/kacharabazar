@@ -12,6 +12,7 @@ import { connectDB } from './config/db.js';
 import { initSocket } from './services/socket.js';
 import { startVehicleSimulator } from './services/vehicleSimulator.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
+import { apiLimiter, authLimiter } from './middleware/rateLimiter.js';
 
 // Route imports
 import authRoutes from './routes/authRoutes.js';
@@ -37,6 +38,9 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const server = http.createServer(app);
+
+// Disable fingerprinting header
+app.disable('x-powered-by');
 
 // Initialize Socket.io
 initSocket(server);
@@ -90,8 +94,11 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Apply general API rate limiting
+app.use('/api', apiLimiter);
+
 // Mount API routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/wards', wardRoutes);
 app.use('/api/pickups', pickupRoutes);
