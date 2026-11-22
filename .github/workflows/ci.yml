@@ -36,6 +36,12 @@ jobs:
       - name: Validate server JavaScript syntax
         run: node --check server/src/server.js
 
+      - name: Seed test database
+        env:
+          NODE_ENV: test
+          MONGODB_URI: mongodb://127.0.0.1:27017/kachra_bazar_test
+        run: npm run seed
+
       - name: Run Jest API integration tests
         env:
           NODE_ENV: test
