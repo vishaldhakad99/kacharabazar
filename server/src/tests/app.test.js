@@ -89,6 +89,52 @@ describe('Kachra Bazar Full Stack API Tests', () => {
       expect(res.body.user).not.toHaveProperty('passwordHash');
     });
 
+    it('POST /api/auth/register should reject invalid email format with 400', async () => {
+      const res = await request(app)
+        .post('/api/auth/register')
+        .send({
+          name: 'Invalid User',
+          email: 'not-an-email',
+          phone: '+91 98930 00000',
+          password: 'Password123',
+          ward: sampleWardId,
+        });
+
+      expect(res.statusCode).toBe(400);
+      expect(res.body.success).toBe(false);
+      expect(res.body).toHaveProperty('errors');
+      expect(res.body.message).toContain('valid email');
+    });
+
+    it('POST /api/auth/register should reject short password with 400', async () => {
+      const res = await request(app)
+        .post('/api/auth/register')
+        .send({
+          name: 'Short Pass',
+          email: 'shortpass@example.com',
+          phone: '+91 98930 00000',
+          password: '123',
+          ward: sampleWardId,
+        });
+
+      expect(res.statusCode).toBe(400);
+      expect(res.body.success).toBe(false);
+      expect(res.body.message).toContain('at least 6 characters');
+    });
+
+    it('POST /api/auth/login should reject invalid email structure with 400', async () => {
+      const res = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: 'bad-email-format',
+          password: 'somepassword',
+        });
+
+      expect(res.statusCode).toBe(400);
+      expect(res.body.success).toBe(false);
+      expect(res.body.message).toContain('valid email');
+    });
+
     it('GET /api/auth/me must not expose passwordHash on authenticated user', async () => {
       const res = await request(app)
         .get('/api/auth/me')
