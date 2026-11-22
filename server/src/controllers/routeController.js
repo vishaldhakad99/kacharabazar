@@ -1,7 +1,10 @@
 import { Route, Vehicle, PickupRequest } from '../models/index.js';
 import { emitToAll } from '../services/socket.js';
 
-ync (req, res, next) => {
+// @desc    Get routes (role-scoped)
+// @route   GET /api/routes
+// @access  Private
+export const getRoutes = async (req, res, next) => {
   try {
 
 
