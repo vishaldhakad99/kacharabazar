@@ -26,8 +26,8 @@ export const protect = async (req, res, next) => {
     const secret = process.env.JWT_SECRET || 'kachra_bazar_super_secure_jwt_secret_sirte_2026';
     const decoded = jwt.verify(token, secret);
 
-    // 3. Find user and check if active
-    const user = await User.findById(decoded.id).select('+passwordHash');
+    // 3. Find user and check if active (passwordHash omitted by default)
+    const user = await User.findById(decoded.id);
     if (!user || !user.isActive) {
       return res.status(401).json({
         success: false,
