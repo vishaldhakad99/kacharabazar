@@ -218,6 +218,48 @@ describe('Kachra Bazar Full Stack API Tests', () => {
       expect(res.statusCode).toBe(400);
       expect(res.body.message).toContain('already been verified');
     });
+
+    it('POST /api/pickups should reject invalid waste category with 400', async () => {
+      const res = await request(app)
+        .post('/api/pickups')
+        .set('Authorization', `Bearer ${citizenToken}`)
+        .send({
+          wasteType: 'radioactive',
+          address: 'Test Address',
+          location: { coordinates: [77.4, 23.2] },
+        });
+
+      expect(res.statusCode).toBe(400);
+      expect(res.body.success).toBe(false);
+      expect(res.body.message).toContain('Invalid waste category');
+    });
+
+    it('POST /api/pickups should reject missing location coordinates with 400', async () => {
+      const res = await request(app)
+        .post('/api/pickups')
+        .set('Authorization', `Bearer ${citizenToken}`)
+        .send({
+          wasteType: 'dry',
+          address: 'Test Address',
+        });
+
+      expect(res.statusCode).toBe(400);
+      expect(res.body.success).toBe(false);
+      expect(res.body.message).toContain('Coordinates must be an array');
+    });
+
+    it('POST /api/dumps should reject invalid dump report payload with 400', async () => {
+      const res = await request(app)
+        .post('/api/dumps')
+        .set('Authorization', `Bearer ${citizenToken}`)
+        .send({
+          description: '',
+          location: { coordinates: [77.4] },
+        });
+
+      expect(res.statusCode).toBe(400);
+      expect(res.body.success).toBe(false);
+    });
   });
 
   describe('4. Eco-Points Summary & Rewards Bazar Redemption', () => {

@@ -80,3 +80,64 @@ export const updatePasswordValidator = [
     .withMessage('New password must be at least 6 characters long'),
   validateRequest,
 ];
+
+/**
+ * Validation rules for pickup request creation
+ */
+export const createPickupValidator = [
+  body('wasteType')
+    .trim()
+    .notEmpty()
+    .withMessage('Waste type is required')
+    .isIn(['wet', 'dry', 'recyclable', 'e-waste', 'hazardous'])
+    .withMessage('Invalid waste category. Allowed: wet, dry, recyclable, e-waste, hazardous'),
+  body('address')
+    .trim()
+    .notEmpty()
+    .withMessage('Pickup address is required'),
+  body('location.coordinates')
+    .isArray({ min: 2, max: 2 })
+    .withMessage('Coordinates must be an array of [longitude, latitude]'),
+  body('location.coordinates.*')
+    .isNumeric()
+    .withMessage('Coordinates values must be numbers'),
+  validateRequest,
+];
+
+/**
+ * Validation rules for doorstep pickup verification
+ */
+export const verifyPickupValidator = [
+  body('segregation')
+    .trim()
+    .notEmpty()
+    .withMessage('Segregation assessment is required')
+    .isIn(['correct', 'partial', 'none'])
+    .withMessage('Segregation must be correct, partial, or none'),
+  validateRequest,
+];
+
+/**
+ * Validation rules for dump hotspot reporting
+ */
+export const reportDumpValidator = [
+  body('description')
+    .trim()
+    .notEmpty()
+    .withMessage('Description of the garbage hotspot is required'),
+  body('photoBefore')
+    .trim()
+    .notEmpty()
+    .withMessage('Photo of the garbage hotspot is required'),
+  body('location.coordinates')
+    .isArray({ min: 2, max: 2 })
+    .withMessage('Coordinates must be an array of [longitude, latitude]'),
+  body('location.coordinates.*')
+    .isNumeric()
+    .withMessage('Coordinates values must be numbers'),
+  body('severity')
+    .optional()
+    .isIn(['low', 'medium', 'high'])
+    .withMessage('Severity must be low, medium, or high'),
+  validateRequest,
+];

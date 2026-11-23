@@ -7,6 +7,7 @@ import {
   clearDump,
 } from '../controllers/dumpController.js';
 import { protect, restrictTo } from '../middleware/auth.js';
+import { reportDumpValidator } from '../middleware/validators.js';
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ router.get('/public', getPublicDumps);
 router.use(protect);
 
 router.route('/')
-  .post(restrictTo('citizen', 'admin'), reportDump)
+  .post(restrictTo('citizen', 'admin'), reportDumpValidator, reportDump)
   .get(getDumps);
 
 router.patch('/:id/assign', restrictTo('admin'), assignDump);
