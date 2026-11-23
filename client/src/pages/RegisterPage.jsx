@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Recycle, User, Mail, Phone, Lock, MapPin, ArrowRight } from 'lucide-react';
+import { Recycle, User, Mail, Phone, Lock, MapPin, ArrowRight, Sparkles } from 'lucide-react';
 import api from '../api/client';
 import useAuthStore from '../store/useAuthStore';
 import toast from 'react-hot-toast';
@@ -69,32 +69,35 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex flex-col justify-center items-center py-6 sm:py-12">
-      <div className="w-full max-w-lg space-y-6">
+    <div className="min-h-[85vh] flex flex-col justify-center items-center py-6 sm:py-12 relative">
+      <div className="absolute top-1/4 -left-20 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-20 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="w-full max-w-lg space-y-6 relative z-10">
         {/* Header */}
         <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-2 mb-2">
-            <div className="w-12 h-12 rounded-2xl bg-primary-600 flex items-center justify-center text-white shadow-md shadow-primary-600/30">
-              <Recycle className="w-7 h-7 text-emerald-300" />
+          <Link to="/" className="inline-flex items-center gap-2 mb-2 group">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-800 to-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-700/25 group-hover:scale-105 transition-all">
+              <Recycle className="w-6 h-6 text-emerald-200 group-hover:rotate-45 transition-transform duration-500" />
             </div>
           </Link>
-          <h1 className="text-2xl font-heading font-black text-ink dark:text-white">
+          <h1 className="text-2xl font-heading font-black text-stone-900 dark:text-white">
             Join Kachra Bazar Bhopal
           </h1>
-          <p className="text-xs text-muted">
-            Create your citizen profile, request pickups, and earn eco-points for proper waste segregation.
+          <p className="text-xs text-stone-500 dark:text-stone-400">
+            Create your citizen profile, request door-to-door pickups, and earn verified eco-points.
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-soft-lg space-y-4">
+        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-gray-900 border border-stone-200/80 dark:border-gray-800 shadow-soft-lg space-y-4">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-ink dark:text-gray-200 mb-1">
+              <label className="block text-xs font-semibold text-stone-700 dark:text-gray-200 mb-1">
                 Full Name *
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                   <User className="w-4 h-4" />
                 </div>
                 <input
@@ -104,18 +107,18 @@ export const RegisterPage = () => {
                   onChange={handleChange}
                   placeholder="e.g. Pooja Sharma"
                   required
-                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-ink dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl text-xs bg-stone-50/80 dark:bg-gray-800 border border-stone-200 dark:border-gray-700 text-stone-900 dark:text-white placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-ink dark:text-gray-200 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-gray-200 mb-1">
                   Email Address *
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                     <Mail className="w-4 h-4" />
                   </div>
                   <input
@@ -125,17 +128,17 @@ export const RegisterPage = () => {
                     onChange={handleChange}
                     placeholder="pooja@gmail.com"
                     required
-                    className="w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-ink dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl text-xs bg-stone-50/80 dark:bg-gray-800 border border-stone-200 dark:border-gray-700 text-stone-900 dark:text-white placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-ink dark:text-gray-200 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-gray-200 mb-1">
                   Mobile Number *
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                     <Phone className="w-4 h-4" />
                   </div>
                   <input
@@ -145,7 +148,7 @@ export const RegisterPage = () => {
                     onChange={handleChange}
                     placeholder="+91 98260 00000"
                     required
-                    className="w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-ink dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl text-xs bg-stone-50/80 dark:bg-gray-800 border border-stone-200 dark:border-gray-700 text-stone-900 dark:text-white placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                   />
                 </div>
               </div>
@@ -153,11 +156,11 @@ export const RegisterPage = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-ink dark:text-gray-200 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-gray-200 mb-1">
                   Password *
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                     <Lock className="w-4 h-4" />
                   </div>
                   <input
@@ -168,20 +171,20 @@ export const RegisterPage = () => {
                     placeholder="At least 6 characters"
                     required
                     minLength={6}
-                    className="w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-ink dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl text-xs bg-stone-50/80 dark:bg-gray-800 border border-stone-200 dark:border-gray-700 text-stone-900 dark:text-white placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-ink dark:text-gray-200 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-gray-200 mb-1">
                   Bhopal Ward *
                 </label>
                 <select
                   name="ward"
                   value={formData.ward}
                   onChange={handleChange}
-                  className="w-full px-3 py-2.5 rounded-xl text-xs bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-ink dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+                  className="w-full px-3 py-2.5 rounded-xl text-xs bg-stone-50/80 dark:bg-gray-800 border border-stone-200 dark:border-gray-700 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                 >
                   {wards.length === 0 ? (
                     <option value="">Loading Bhopal Wards...</option>
@@ -197,11 +200,11 @@ export const RegisterPage = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-ink dark:text-gray-200 mb-1">
+              <label className="block text-xs font-semibold text-stone-700 dark:text-gray-200 mb-1">
                 House / Street Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <input
@@ -210,7 +213,7 @@ export const RegisterPage = () => {
                   value={formData.address}
                   onChange={handleChange}
                   placeholder="e.g. Flat 302, Sagar Royal Villas, Arera Colony"
-                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-ink dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl text-xs bg-stone-50/80 dark:bg-gray-800 border border-stone-200 dark:border-gray-700 text-stone-900 dark:text-white placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                 />
               </div>
             </div>
@@ -218,7 +221,7 @@ export const RegisterPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-xl bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-bold text-xs shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold text-xs shadow-md shadow-emerald-600/20 hover:shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2"
             >
               {loading ? (
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -230,13 +233,13 @@ export const RegisterPage = () => {
             </button>
           </form>
 
-          <div className="pt-2 text-center text-xs text-muted border-t border-gray-100 dark:border-gray-800">
-            Already registered?{' '}
+          <div className="pt-3 text-center text-xs text-stone-500 dark:text-stone-400 border-t border-stone-100 dark:border-gray-800">
+            Already have an account?{' '}
             <Link
               to="/login"
-              className="font-bold text-primary-600 dark:text-primary-400 hover:underline"
+              className="font-bold text-emerald-600 dark:text-emerald-400 hover:underline"
             >
-              Sign In here
+              Sign In Here
             </Link>
           </div>
         </div>

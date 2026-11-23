@@ -23,29 +23,29 @@ export const Navbar = ({ onToggleSidebar }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-gray-100 dark:border-gray-800 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-stone-200/70 dark:border-gray-800/80 glass-header transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Left: Brand & Mobile Menu Toggle */}
         <div className="flex items-center gap-3">
           {isAuthenticated && onToggleSidebar && (
             <button
               onClick={onToggleSidebar}
-              className="lg:hidden p-2 rounded-xl text-ink dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="lg:hidden p-2 rounded-xl text-stone-700 dark:text-gray-200 hover:bg-stone-100 dark:hover:bg-gray-800 transition-colors active:scale-95"
               aria-label="Toggle menu"
             >
               <Menu className="w-5 h-5" />
             </button>
           )}
 
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-primary-800 to-primary-600 flex items-center justify-center text-white shadow-md shadow-primary-700/20 group-hover:scale-105 transition-transform">
-              <Recycle className="w-6 h-6 text-emerald-300" />
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-800 via-emerald-700 to-teal-600 flex items-center justify-center text-white shadow-md shadow-emerald-800/25 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-emerald-800/30 transition-all duration-300">
+              <Recycle className="w-5 h-5 text-emerald-200 group-hover:rotate-45 transition-transform duration-500" />
             </div>
             <div>
-              <span className="font-heading font-black text-lg tracking-tight text-primary-900 dark:text-white leading-none block">
-                Kachra <span className="text-accent-500">Bazar</span>
+              <span className="font-heading font-black text-lg tracking-tight text-stone-900 dark:text-white leading-none block">
+                Kachra <span className="text-amber-500">Bazar</span>
               </span>
-              <span className="text-[10px] font-semibold text-muted tracking-wider uppercase block">
+              <span className="text-[10px] font-semibold text-stone-500 dark:text-stone-400 tracking-wider uppercase block">
                 Smart Waste • Bhopal
               </span>
             </div>
@@ -56,14 +56,14 @@ export const Navbar = ({ onToggleSidebar }) => {
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Public links when not logged in */}
           {!isAuthenticated && (
-            <div className="hidden sm:flex items-center gap-4 mr-2 text-xs font-semibold">
-              <Link to="/" className="text-ink dark:text-gray-300 hover:text-primary-600">
+            <div className="hidden sm:flex items-center gap-5 mr-3 text-xs font-semibold">
+              <Link to="/" className="text-stone-600 dark:text-gray-300 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">
                 Home
               </Link>
-              <Link to="/about" className="text-ink dark:text-gray-300 hover:text-primary-600">
+              <Link to="/about" className="text-stone-600 dark:text-gray-300 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">
                 About & Team
               </Link>
-              <a href="#hotspot-map" className="text-ink dark:text-gray-300 hover:text-primary-600">
+              <a href="#hotspot-map" className="text-stone-600 dark:text-gray-300 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">
                 City Hotspots
               </a>
             </div>
@@ -73,23 +73,23 @@ export const Navbar = ({ onToggleSidebar }) => {
           {isAuthenticated && user?.role === 'citizen' && (
             <Link
               to="/dashboard/points"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent-50 dark:bg-accent-950/60 border border-accent-200 dark:border-accent-900 text-accent-700 dark:text-accent-300 text-xs font-bold hover:shadow-sm transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/60 dark:to-orange-950/50 border border-amber-200/80 dark:border-amber-900/60 text-amber-700 dark:text-amber-300 text-xs font-bold shadow-sm hover:shadow hover:scale-[1.02] active:scale-95 transition-all"
             >
-              <Sparkles className="w-3.5 h-3.5 text-accent-500" />
-              <span>{user.ecoBalance || 0} pts</span>
+              <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+              <span>{user.ecoBalance || 0} <span className="font-medium text-[10px]">pts</span></span>
             </Link>
           )}
 
           {/* Dark Mode Switcher */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-xl text-ink dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="p-2 rounded-xl text-stone-600 dark:text-gray-200 hover:bg-stone-100 dark:hover:bg-gray-800 transition-all active:scale-90"
             aria-label="Toggle dark mode"
           >
             {isDark ? (
-              <Sun className="w-5 h-5 text-amber-400" />
+              <Sun className="w-4 h-4 text-amber-400 hover:rotate-90 transition-transform duration-300" />
             ) : (
-              <Moon className="w-5 h-5 text-gray-600" />
+              <Moon className="w-4 h-4 text-stone-600 hover:-rotate-12 transition-transform duration-300" />
             )}
           </button>
 
@@ -98,19 +98,19 @@ export const Navbar = ({ onToggleSidebar }) => {
 
           {/* Auth CTA or User Menu */}
           {isAuthenticated ? (
-            <div className="flex items-center gap-2 pl-1 border-l border-gray-200 dark:border-gray-800">
+            <div className="flex items-center gap-2 pl-2 border-l border-stone-200 dark:border-gray-800">
               <Link
                 to="/profile"
-                className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-left transition-colors"
+                className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-stone-100 dark:hover:bg-gray-800 text-left transition-all active:scale-95"
               >
-                <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-950 text-primary-700 dark:text-primary-300 font-bold text-xs flex items-center justify-center border border-primary-200 dark:border-primary-800">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white font-bold text-xs flex items-center justify-center shadow-sm">
                   {user.name ? user.name[0].toUpperCase() : 'U'}
                 </div>
                 <div className="hidden md:block">
-                  <p className="text-xs font-bold text-ink dark:text-white leading-tight">
+                  <p className="text-xs font-bold text-stone-900 dark:text-white leading-tight">
                     {user.name.split(' ')[0]}
                   </p>
-                  <p className="text-[10px] capitalize text-primary-600 dark:text-primary-400 font-semibold">
+                  <p className="text-[10px] capitalize text-emerald-600 dark:text-emerald-400 font-semibold">
                     {user.role}
                   </p>
                 </div>
@@ -119,7 +119,7 @@ export const Navbar = ({ onToggleSidebar }) => {
               <button
                 onClick={handleLogout}
                 title="Logout"
-                className="p-2 rounded-xl text-gray-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                className="p-2 rounded-xl text-stone-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all active:scale-90"
               >
                 <LogOut className="w-4 h-4" />
               </button>
@@ -128,13 +128,13 @@ export const Navbar = ({ onToggleSidebar }) => {
             <div className="flex items-center gap-2">
               <Link
                 to="/login"
-                className="px-4 py-2 rounded-xl text-xs font-semibold text-ink dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="px-3.5 py-2 rounded-xl text-xs font-semibold text-stone-700 dark:text-gray-200 hover:bg-stone-100 dark:hover:bg-gray-800 transition-colors"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="px-4 py-2 rounded-xl text-xs font-bold bg-primary-600 hover:bg-primary-700 text-white shadow-md transition-all active:scale-95"
+                className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 hover:shadow-lg hover:shadow-emerald-600/30 transition-all active:scale-95"
               >
                 Join Clean City
               </Link>
