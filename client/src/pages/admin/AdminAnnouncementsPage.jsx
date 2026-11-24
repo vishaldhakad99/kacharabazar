@@ -40,8 +40,8 @@ const AdminAnnouncementsPage = () => {
         api.get('/announcements'),
         api.get('/wards'),
       ]);
-      setAnnouncements(annRes.data.announcements || []);
-      setWards(wardRes.data.wards || []);
+      setAnnouncements(annRes.announcements || annRes.data?.announcements || []);
+      setWards(wardRes.wards || wardRes.data?.wards || (Array.isArray(wardRes) ? wardRes : []));
 
       
     } catch (err) {
@@ -77,7 +77,7 @@ const AdminAnnouncementsPage = () => {
       };
 
       const res = await api.post('/announcements', payload);
-      toast.success(res.data.message || 'Announcement broadcasted live to citizens!');
+      toast.success(res.message || res.data?.message || 'Announcement broadcasted live to citizens!');
       setTitle('');
       setBody('');
       setWardId('');

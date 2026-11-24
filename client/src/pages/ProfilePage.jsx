@@ -45,7 +45,7 @@ const ProfilePage = () => {
     const fetchWards = async () => {
       try {
         const res = await api.get('/wards');
-        setWards(res.data.wards || []);
+        setWards(res.wards || res.data?.wards || (Array.isArray(res) ? res : []));
       } catch (err) {
         // Ignore
       }
@@ -64,8 +64,9 @@ const ProfilePage = () => {
         ward: wardId || undefined,
       });
 
-      if (res.data?.user) {
-        updateUser(res.data.user);
+      const updatedUser = res.user || res.data?.user;
+      if (updatedUser) {
+        updateUser(updatedUser);
       }
       toast.success('Profile details updated successfully!');
     } catch (err) {

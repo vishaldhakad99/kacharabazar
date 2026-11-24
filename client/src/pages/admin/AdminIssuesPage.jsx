@@ -37,7 +37,7 @@ const AdminIssuesPage = () => {
       if (typeFilter) params.type = typeFilter;
 
       const res = await api.get('/issues', { params });
-      setIssues(res.data.issues || []);
+      setIssues(res.issues || res.data?.issues || []);
     } catch (err) {
       toast.error('Failed to load field issues.');
     } finally {
