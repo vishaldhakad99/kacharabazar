@@ -40,7 +40,7 @@ const AdminRewardsPage = () => {
   const fetchCatalog = async () => {
     try {
       const res = await api.get('/rewards');
-      setRewards(res.data.rewards || []);
+      setRewards(res.rewards || res.data?.rewards || []);
     } catch (err) {
       toast.error('Failed to load rewards catalog.');
     }
@@ -51,7 +51,7 @@ const AdminRewardsPage = () => {
       const params = {};
       if (statusFilter) params.status = statusFilter;
       const res = await api.get('/rewards/redemptions', { params });
-      setRedemptions(res.data.redemptions || []);
+      setRedemptions(res.redemptions || res.data?.redemptions || []);
     } catch (err) {
       toast.error('Failed to load citizen redemptions.');
     }
