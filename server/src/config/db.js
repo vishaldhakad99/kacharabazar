@@ -1,13 +1,16 @@
 import mongoose from 'mongoose';
 import Ward from '../models/Ward.js';
+import User from '../models/User.js';
+import Reward from '../models/Reward.js';
 
 let memoryServer = null;
 
-// Initial 8 Bhopal wards seed helper if database is fresh/empty
-const ensureDefaultWards = async () => {
+// Initial Bhopal wards, demo users, and rewards seed helper if database is fresh/empty
+const ensureDefaultData = async () => {
   try {
-    const count = await Ward.countDocuments();
-    if (count === 0) {
+    let firstWard = null;
+    const wardCount = await Ward.countDocuments();
+    if (wardCount === 0) {
       console.log('[Database] No wards detected. Seeding 8 Bhopal Wards automatically...');
       const defaultWards = [
         { name: 'Ward 10 - MP Nagar Zone 1', code: 'W-010', city: 'Bhopal', population: 38500, center: { type: 'Point', coordinates: [77.4326, 23.2332] } },
@@ -19,11 +22,82 @@ const ensureDefaultWards = async () => {
         { name: 'Ward 52 - Hoshangabad Road', code: 'W-052', city: 'Bhopal', population: 48000, center: { type: 'Point', coordinates: [77.4585, 23.1855] } },
         { name: 'Ward 61 - Ayodhya Bypass', code: 'W-061', city: 'Bhopal', population: 44000, center: { type: 'Point', coordinates: [77.4695, 23.2725] } },
       ];
-      await Ward.insertMany(defaultWards);
+      const inserted = await Ward.insertMany(defaultWards);
+      firstWard = inserted[0];
       console.log('[Database] 8 Bhopal Wards seeded successfully.');
+    } else {
+      firstWard = await Ward.findOne();
+    }
+
+    const userCount = await User.countDocuments();
+    if (userCount === 0) {
+      console.log('[Database] No users detected. Seeding core demo accounts (Admin, Worker, Citizen)...');
+      const hash = await User.hashPassword('Demo@1234');
+      await User.insertMany([
+        {
+          name: 'Dr. Rakesh Swaroop (BMC Sanitation Chief)',
+          email: 'admin@kachrabazar.in',
+          phone: '+91 98260 12345',
+          passwordHash: hash,
+          role: 'admin',
+          ward: firstWard?._id,
+          address: 'Bhopal Municipal Corporation HQ, Mata Mandir, Bhopal',
+          isActive: true,
+        },
+        {
+          name: 'Mukesh Kumar Dhakad',
+          email: 'worker1@kachrabazar.in',
+          phone: '+91 98261 00001',
+          passwordHash: hash,
+          role: 'worker',
+          ward: firstWard?._id,
+          address: 'Ward W-010 Sanitation Depot, Bhopal',
+          isActive: true,
+        },
+        {
+          name: 'Aarav Sharma',
+          email: 'citizen@kachrabazar.in',
+          phone: '+91 98765 43210',
+          passwordHash: hash,
+          role: 'citizen',
+          ward: firstWard?._id,
+          address: 'House #42, Sector A, MP Nagar, Bhopal',
+          ecoBalance: 250,
+          lifetimePoints: 500,
+          streakCount: 5,
+          isActive: true,
+        },
+      ]);
+      console.log('[Database] Demo accounts created successfully.');
+    }
+
+    const rewardCount = await Reward.countDocuments();
+    if (rewardCount === 0) {
+      console.log('[Database] No rewards detected. Seeding initial rewards catalog...');
+      await Reward.insertMany([
+        {
+          title: '₹100 Bhopal Metro Rail Smart Card Top-up',
+          description: 'Recharge coupon for Bhopal Metro rapid transit travel card.',
+          category: 'vouchers',
+          pointsCost: 100,
+          stock: 50,
+          partnerName: 'MP Metro Rail Corporation Ltd. (MPMRCL)',
+          terms: 'Valid on Orange & Blue line corridors across Bhopal.',
+        },
+        {
+          title: '₹200 Electricity Bill Rebate (MPEZ)',
+          description: 'Direct rebate on monthly domestic residential electricity consumption.',
+          category: 'utilities',
+          pointsCost: 200,
+          stock: 40,
+          partnerName: 'MP Madhya Kshetra Vidyut Vitaran Co. Ltd.',
+          terms: 'Valid on residential domestic connections within Bhopal limits.',
+        },
+      ]);
+      console.log('[Database] Initial rewards seeded successfully.');
     }
   } catch (err) {
-    console.warn('[Database] Ward seed check skipped:', err.message);
+    console.warn('[Database] Initial data seed check skipped:', err.message);
   }
 };
 
@@ -45,7 +119,7 @@ export const connectDB = async () => {
       serverSelectionTimeoutMS: 4000,
     });
     console.log(`[Database] MongoDB connected successfully: ${conn.connection.host}/${conn.connection.name}`);
-    await ensureDefaultWards();
+    await ensureDefaultData();
     return conn;
   } catch (err) {
     console.warn(`[Database] Connection to ${targetUri} failed: ${err.message}`);
@@ -58,7 +132,7 @@ export const connectDB = async () => {
           serverSelectionTimeoutMS: 3000,
         });
         console.log(`[Database] Local MongoDB connected successfully: ${localConn.connection.host}/${localConn.connection.name}`);
-        await ensureDefaultWards();
+        await ensureDefaultData();
         return localConn;
       } catch (localErr) {
         console.warn(`[Database] Local MongoDB unavailable (${localErr.message}).`);
@@ -77,7 +151,7 @@ export const connectDB = async () => {
       const memoryUri = memoryServer.getUri();
       const conn = await mongoose.connect(memoryUri);
       console.log(`[Database] Embedded MongoDB initialized & connected at: ${memoryUri}`);
-      await ensureDefaultWards();
+      await ensureDefaultData();
       return conn;
     } catch (fallbackErr) {
       console.error('[Database] Failed to start embedded MongoDB fallback:', fallbackErr.message);
