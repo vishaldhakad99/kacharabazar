@@ -21,7 +21,7 @@ export const getRoutes = async (req, res, next) => {
     
     if (req.user.role === 'worker') {
       query.worker = req.user.id;
-    } else if (req.user.role === 'admin') {
+    } else {
       if (ward) query.ward = ward;
     }
 

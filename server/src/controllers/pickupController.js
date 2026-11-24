@@ -125,9 +125,10 @@ export const getPickupById = async (req, res, next) => {
     }
 
     // Authorization check
+    const citizenId = (pickup.citizen?._id || pickup.citizen)?.toString();
     if (
       req.user.role === 'citizen' &&
-      pickup.citizen._id.toString() !== req.user.id
+      citizenId !== req.user.id
     ) {
       return res.status(403).json({
         success: false,
