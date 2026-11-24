@@ -1,5 +1,6 @@
 import express from 'express';
 import http from 'http';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -23,6 +24,7 @@ import dumpRoutes from './routes/dumpRoutes.js';
 import vehicleRoutes from './routes/vehicleRoutes.js';
 import routeRoutes from './routes/routeRoutes.js';
 import rewardRoutes from './routes/rewardRoutes.js';
+import redemptionRoutes from './routes/redemptionRoutes.js';
 import pointRoutes from './routes/pointRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
@@ -80,9 +82,28 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
 
-// Serve uploaded static files
+// Serve uploaded static files (both /uploads and /api/uploads to prevent 404s)
 const uploadsDir = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 app.use('/uploads', express.static(uploadsDir));
+app.use('/api/uploads', express.static(uploadsDir));
+
+// Root API information endpoint (avoids 404 on direct backend access)
+app.get('/', (req, res) => {
+  const clientDistDir = path.join(__dirname, '../../client/dist');
+  if (fs.existsSync(path.join(clientDistDir, 'index.html'))) {
+    return res.sendFile(path.join(clientDistDir, 'index.html'));
+  }
+  res.status(200).json({
+    success: true,
+    message: 'Welcome to Kachra Bazar API - Municipal Waste Management Platform (Bhopal)',
+    health: '/api/health',
+    version: '1.0.0',
+    status: 'online',
+  });
+});
 
 // Health check route
 app.get('/api/health', (req, res) => {
@@ -106,12 +127,25 @@ app.use('/api/dumps', dumpRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/routes', routeRoutes);
 app.use('/api/rewards', rewardRoutes);
+app.use('/api/redemptions', redemptionRoutes);
 app.use('/api/points', pointRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/issues', issueRoutes);
 app.use('/api/uploads', uploadRoutes);
+
+// SPA fallback for frontend routes in production / preview builds
+const clientDistDir = path.join(__dirname, '../../client/dist');
+if (fs.existsSync(clientDistDir)) {
+  app.use(express.static(clientDistDir));
+  app.get('*', (req, res, next) => {
+    if (req.originalUrl.startsWith('/api') || req.originalUrl.startsWith('/uploads')) {
+      return next();
+    }
+    res.sendFile(path.join(clientDistDir, 'index.html'));
+  });
+}
 
 // Catch 404 & Central Error Handling
 app.use(notFound);
